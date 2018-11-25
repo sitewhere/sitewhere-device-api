@@ -1,0 +1,4 @@
+rootProject.name = 'sitewhere-device-api'
+include ':sitewhere-device-protobuf'
+
+project(':sitewhere-device-protobuf').projectDir = "$rootDir/sitewhere-device-protobuf" as File

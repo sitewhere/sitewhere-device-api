@@ -1,0 +1,87 @@
+description = 'SiteWhere Protobuf Device API'
+
+apply plugin: 'com.google.protobuf'
+
+dependencies {
+	compile group: 'com.google.protobuf', name: 'protobuf-java', version: "${rootProject.ext['protobuf.version']}"
+}
+
+apply plugin: 'java'
+apply plugin: 'com.google.protobuf'
+protobuf {
+
+	// Configure the protoc executable
+	protoc {
+	
+		// Download from repositories.
+		artifact = "com.google.protobuf:protoc:3.3.0"
+	}
+	
+	generatedFilesBaseDir = "$projectDir/src/generated"
+}
+
+apply plugin: 'eclipse'
+eclipse.classpath.file.whenMerged {
+	entries += new org.gradle.plugins.ide.eclipse.model.SourceFolder('src/main/resources', null)    
+ 	def generated = new org.gradle.plugins.ide.eclipse.model.SourceFolder('src/generated/main/java', null)
+	generated.getEntryAttributes().put("ignore_optional_problems", "true")
+	entries += generated
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allJava
+    classifier = 'sources'
+}
+
+task javadocJar(type: Jar) {
+    from javadoc
+    classifier = 'javadoc'
+}
+
+// Publish jar.	
+apply plugin: 'maven-publish'
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+		    from components.java
+            artifact sourcesJar
+            artifact javadocJar
+			pom {
+			    name = 'Device Protobuf API'
+			    description = 'SiteWhere Device Protobuf API'
+			    url = 'http://sitewhere.io'
+			    licenses {
+			        license {
+			            name = 'CPAL-1.0'
+			            url = 'https://opensource.org/licenses/CPAL-1.0'
+			        }
+			    }
+                developers {
+                    developer {
+                        id = 'admin'
+                        name = 'SiteWhere Admin'
+                        email = 'admin@sitewhere.com'
+                    }
+                }
+                scm {
+                    connection = 'https://github.com/sitewhere/sitewhere-device-api.git'
+                    url = 'https://github.com/sitewhere/sitewhere-device-api'
+                }
+			}	
+		}
+	}
+    repositories {
+        maven {
+            url project.nexusUrl
+            credentials {
+                username project.nexusUsername
+                password project.nexusPassword
+            }
+        }
+    }
+}
+
+apply plugin: 'signing'
+signing {
+    sign publishing.publications.mavenJava
+}
