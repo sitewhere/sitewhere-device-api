@@ -87,18 +87,13 @@ message DeviceEvent {
 		map<string, string> metadata = 6;
 	}
 	
-	// A single measurement.
-	message Measurement {
-		GOptionalString measurementId = 1;
-		GOptionalDouble measurementValue = 2;
-	}
-
 	// Device Measurement
-	message DeviceMeasurements {
-		repeated Measurement measurement = 1;
-		GOptionalFixed64 eventDate = 2;
-		GOptionalBoolean updateState = 3;
-		map<string, string> metadata = 4;
+	message DeviceMeasurement {
+		GOptionalString measurementName = 1;
+		GOptionalDouble measurementValue = 2;
+		GOptionalFixed64 eventDate = 3;
+		GOptionalBoolean updateState = 4;
+		map<string, string> metadata = 5;
 	}
 	
 	// Create a device stream.
@@ -110,7 +105,7 @@ message DeviceEvent {
 	
 	// A chunk of streaming data.
 	message DeviceStreamData {
-		GOptionalString hardwareId = 1;
+		GOptionalString deviceToken = 1;
 		GOptionalString streamId = 2;
 		GOptionalFixed64 sequenceNumber = 3;
 		bytes data = 4;
