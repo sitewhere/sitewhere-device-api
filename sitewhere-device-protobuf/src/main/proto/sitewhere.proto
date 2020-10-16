@@ -60,6 +60,7 @@ message DeviceEvent {
 		GOptionalString customerToken = 2;
 		GOptionalString areaToken = 3;
 		map<string, string> metadata = 4;
+		GOptionalString assetToken = 5;
 	}
 	
 	// Device Ack message fields

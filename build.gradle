@@ -3,22 +3,24 @@ buildscript {
 		maven { url "https://plugins.gradle.org/m2/" }
  	}
 	dependencies {
-		classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.3'
+		classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.8'
 		classpath "gradle.plugin.nl.javadude.gradle.plugins:license-gradle-plugin:0.14.0"
 	}
 }
 
 ext['protobuf.version'] = '3.5.1'
+ext['grpc.version'] = '1.26.0'
 
 apply plugin: 'distribution'
     
 allprojects {
-    group = 'com.sitewhere'
-	version = '2.0.1'
+	group = 'com.sitewhere'
+	version = '3.0.0.beta1'
 	
-    repositories {
-        maven { url "http://repo.maven.apache.org/maven2" }
-    }
+	repositories {
+		mavenCentral()
+		mavenLocal()
+	}
 }
 
 subprojects {
